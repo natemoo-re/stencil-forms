@@ -17,13 +17,6 @@ import {
 
 export namespace Components {
 
-  interface StencilFormDebug {
-    'state': any;
-  }
-  interface StencilFormDebugAttributes extends StencilHTMLAttributes {
-    'state'?: any;
-  }
-
   interface StencilForm {
     'initialValues': FormValues;
     /**
@@ -62,21 +55,13 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
-    'StencilFormDebug': Components.StencilFormDebug;
     'StencilForm': Components.StencilForm;
   }
 
   interface StencilIntrinsicElements {
-    'stencil-form-debug': Components.StencilFormDebugAttributes;
     'stencil-form': Components.StencilFormAttributes;
   }
 
-
-  interface HTMLStencilFormDebugElement extends Components.StencilFormDebug, HTMLStencilElement {}
-  var HTMLStencilFormDebugElement: {
-    prototype: HTMLStencilFormDebugElement;
-    new (): HTMLStencilFormDebugElement;
-  };
 
   interface HTMLStencilFormElement extends Components.StencilForm, HTMLStencilElement {}
   var HTMLStencilFormElement: {
@@ -85,12 +70,10 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
-    'stencil-form-debug': HTMLStencilFormDebugElement
     'stencil-form': HTMLStencilFormElement
   }
 
   interface ElementTagNameMap {
-    'stencil-form-debug': HTMLStencilFormDebugElement;
     'stencil-form': HTMLStencilFormElement;
   }
 
