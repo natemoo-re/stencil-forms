@@ -8,7 +8,7 @@ It manages the overall state of your form for you, without doing any hand-wavey 
 
 > 🚨 This component is built for Stencil apps, not vanilla Web Component projects. It might be possible, but I wouldn't recommend it. 🚨
 
-`<stencil-form />` is heavily inspired by [Formik](https://github.com/jaredpalmer/formik) (a React-based solution), except using Web Components and standard, built-in browser features.
+`<stencil-form />` is heavily inspired by [Formik](https://github.com/jaredpalmer/formik) and [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd) (both React-based solutions), except relying Web Components and standard, built-in browser features.
 
 ## Example Usage
 
