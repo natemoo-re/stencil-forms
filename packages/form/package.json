@@ -1,11 +1,11 @@
 {
-  "name": "stencil-starter-project-name",
+  "name": "stencil-form",
   "version": "0.0.1",
-  "description": "Stencil Component Starter",
+  "description": "Stencil component for managing form state",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
   "unpkg": "dist/ionic.js",
-  "types": "dist/types/components.d.ts",
+  "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "files": [
     "dist/"
