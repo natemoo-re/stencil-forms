@@ -8,62 +8,90 @@
 import '@stencil/core';
 
 
+import {
+  FormRenderProps,
+  FormValidator,
+  FormValues,
+} from './declarations';
 
 
 export namespace Components {
 
-  interface MyComponent {
-    /**
-    * The first name
-    */
-    'first': string;
-    /**
-    * The last name
-    */
-    'last': string;
-    /**
-    * The middle name
-    */
-    'middle': string;
+  interface StencilFormDebug {
+    'state': any;
   }
-  interface MyComponentAttributes extends StencilHTMLAttributes {
+  interface StencilFormDebugAttributes extends StencilHTMLAttributes {
+    'state'?: any;
+  }
+
+  interface StencilForm {
+    'initialValues': FormValues;
     /**
-    * The first name
+    * Tell Form if initial form values are valid or not on first render
     */
-    'first'?: string;
+    'isInitialValid'?: boolean;
+    'renderer': (props: FormRenderProps<any>) => any;
+    'validate': FormValidator<FormValues>;
     /**
-    * The last name
+    * Tells Form to validate the form on each input's onBlur event
     */
-    'last'?: string;
+    'validateOnBlur'?: boolean;
     /**
-    * The middle name
+    * Tells Form to validate the form on each input's onInput event
     */
-    'middle'?: string;
+    'validateOnInput'?: boolean;
+  }
+  interface StencilFormAttributes extends StencilHTMLAttributes {
+    'initialValues'?: FormValues;
+    /**
+    * Tell Form if initial form values are valid or not on first render
+    */
+    'isInitialValid'?: boolean;
+    'renderer'?: (props: FormRenderProps<any>) => any;
+    'validate'?: FormValidator<FormValues>;
+    /**
+    * Tells Form to validate the form on each input's onBlur event
+    */
+    'validateOnBlur'?: boolean;
+    /**
+    * Tells Form to validate the form on each input's onInput event
+    */
+    'validateOnInput'?: boolean;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
-    'MyComponent': Components.MyComponent;
+    'StencilFormDebug': Components.StencilFormDebug;
+    'StencilForm': Components.StencilForm;
   }
 
   interface StencilIntrinsicElements {
-    'my-component': Components.MyComponentAttributes;
+    'stencil-form-debug': Components.StencilFormDebugAttributes;
+    'stencil-form': Components.StencilFormAttributes;
   }
 
 
-  interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {}
-  var HTMLMyComponentElement: {
-    prototype: HTMLMyComponentElement;
-    new (): HTMLMyComponentElement;
+  interface HTMLStencilFormDebugElement extends Components.StencilFormDebug, HTMLStencilElement {}
+  var HTMLStencilFormDebugElement: {
+    prototype: HTMLStencilFormDebugElement;
+    new (): HTMLStencilFormDebugElement;
+  };
+
+  interface HTMLStencilFormElement extends Components.StencilForm, HTMLStencilElement {}
+  var HTMLStencilFormElement: {
+    prototype: HTMLStencilFormElement;
+    new (): HTMLStencilFormElement;
   };
 
   interface HTMLElementTagNameMap {
-    'my-component': HTMLMyComponentElement
+    'stencil-form-debug': HTMLStencilFormDebugElement
+    'stencil-form': HTMLStencilFormElement
   }
 
   interface ElementTagNameMap {
-    'my-component': HTMLMyComponentElement;
+    'stencil-form-debug': HTMLStencilFormDebugElement;
+    'stencil-form': HTMLStencilFormElement;
   }
 
 
