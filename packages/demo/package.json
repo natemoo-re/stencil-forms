@@ -1,6 +1,6 @@
 {
   "name": "demo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "stencil-form demo",
   "private": true,
   "module": "dist/esm/index.js",
@@ -23,6 +23,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "stencil-form": "^0.0.1"
+    "stencil-form": "^0.0.2"
   }
 }
