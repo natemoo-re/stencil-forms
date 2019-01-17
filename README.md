@@ -37,13 +37,15 @@ interface FormValues {
 ```
 
 
-## Getting Started
+## Installation
 
-### Script tag
+This package in unpublished at the moment. It will be available on NPM soon.
+
+<!-- ### Script tag
 
 - Put a script tag similar to this `<script src='https://unpkg.com/stencil-form@0.0.1/dist/stencil-form.js'></script>` in the head of your index.html
 - Then you can use the element anywhere in your template, JSX, html etc
 
 ### In a stencil-starter app
 - Run `npm install stencil-form --save`
-- Add an import to the npm packages `import 'stencil-form';`
+- Add an import to the npm packages `import 'stencil-form';` -->
