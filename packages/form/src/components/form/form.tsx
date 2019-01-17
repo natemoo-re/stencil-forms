@@ -1,9 +1,10 @@
-import { Component, Prop, State, Element } from '@stencil/core';
-import { FormRenderProps, FormState, FormValues, FormConfig, FormComputedProps, FormHandlers, FormValidator, FormValidity, FormTouched, FormErrors, FormUtils } from '../declarations';
-import { getElementValue, copyValidityState } from '../utils/types';
+import { Component, Prop, State, Element, Event, EventEmitter } from '@stencil/core';
+import { FormRenderProps, FormState, FormValues, FormConfig, FormComputedProps, FormHandlers, FormValidator, FormValidity, FormTouched, FormErrors, FormUtils, StencilFormEventDetail } from '../../declarations';
+import { getElementValue, copyValidityState } from '../../utils/types';
 
 @Component({
-    tag: 'stencil-form'
+    tag: 'stencil-form',
+    styleUrl: 'form.css'
 })
 export class Form implements FormConfig {
     
@@ -11,7 +12,6 @@ export class Form implements FormConfig {
     private formId: string = `stencil-form-${formIds++}`;
     private dirty: boolean = false;
 
-    /** Initially set to `isInitialValid`, then true when values pass validation. */
     @State() isValid: boolean = false;
     @State() isValidating: boolean = false;
     @State() isSubmitting: boolean = false;
@@ -35,7 +35,7 @@ export class Form implements FormConfig {
     @Prop() isInitialValid?: boolean = false;
 
     // @Event({ eventName: 'formReset' }) onFormReset: { emit: () => StencilFormEvent<FormValues> };
-    // @Event({ eventName: 'formSubmit' }) onFormSubmit: { emit: () => StencilFormEvent<FormValues> };
+    @Event({ eventName: 'submit' }) onFormSubmit: EventEmitter<StencilFormEventDetail>;
 
     componentWillLoad() {
         this.isValid = this.isInitialValid;
@@ -53,9 +53,20 @@ export class Form implements FormConfig {
         }
     }
 
-    handleSubmit = (_event: Event) => {
+    setSubmitting = (value: boolean) => this.isSubmitting = value; 
+
+    handleSubmit = (event: Event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const isValid = (event.target as HTMLFormElement).checkValidity();
+        this.isValid = isValid;
+        if (!this.isValid) return;
+
         this.isSubmitting = true;
         this.submitCount++;
+        const { setSubmitting } = this;
+        this.onFormSubmit.emit({ values: this.values, actions: { setSubmitting } });
     };
     
     handleReset = () => {
@@ -127,8 +138,8 @@ export class Form implements FormConfig {
     }
 
     private composedHandlers = (): FormHandlers<FormValues> => {
-        const { /** handleSubmit, handleReset, */ handleInput, handleFocus, handleBlur } = this;
-        return { /** handleSubmit, handleReset, */ handleInput, handleFocus, handleBlur };
+        const { handleSubmit, handleReset, handleInput, handleFocus, handleBlur } = this;
+        return { handleSubmit, handleReset, handleInput, handleFocus, handleBlur };
     }
 
     private computeProps = () => {
@@ -166,7 +177,12 @@ export class Form implements FormConfig {
             htmlFor: `${this.formId}-input-${field}`
         });
 
-        return { groupProps, inputProps, labelProps };
+        const formProps = {
+            action: 'javascript:void(0);',
+            onSubmit: this.handleSubmit
+        };
+
+        return { groupProps, inputProps, labelProps, formProps };
     }
 
     render() {

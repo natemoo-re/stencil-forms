@@ -62,8 +62,8 @@ export interface FormComputedProps<Values> {
 }
 
 export interface FormHandlers<Values> {
-    // handleSubmit: (e?: Event) => void;
-    // handleReset: () => void;
+    handleSubmit: (e?: Event) => void;
+    handleReset: () => void;
     handleInput(field: keyof Values): ((e: Event) => void);
     handleBlur(field: keyof Values): ((e: Event) => void);
     handleFocus(field: keyof Values): ((e?: Event) => void);
@@ -86,7 +86,10 @@ export interface FormUtils<Values> {
     groupProps: (key: keyof Values) => object
     inputProps: (key: keyof Values) => object,
     labelProps: (key: keyof Values) => object,
+    formProps: object
 }
+
+export type StencilFormEventDetail = { values: FormValues, actions: { setSubmitting: (value: boolean) => void } };
 
 export type FormRenderProps<Values> = FormState<Values> &
     FormHandlers<Values> &

@@ -12,7 +12,11 @@ import {
   FormRenderProps,
   FormValidator,
   FormValues,
+  StencilFormEventDetail,
 } from './declarations';
+import {
+  EventEmitter,
+} from '@stencil/core';
 
 
 export namespace Components {
@@ -40,6 +44,7 @@ export namespace Components {
     * Tell Form if initial form values are valid or not on first render
     */
     'isInitialValid'?: boolean;
+    'onSubmit'?: (event: CustomEvent<StencilFormEventDetail>) => void;
     'renderer'?: (props: FormRenderProps<any>) => any;
     'validate'?: FormValidator<FormValues>;
     /**

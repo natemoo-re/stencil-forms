@@ -8,23 +8,58 @@
 import '@stencil/core';
 
 import 'stencil-form';
+import '@stencil/router';
+import '@stencil/state-tunnel';
 
 
 export namespace Components {
 
+  interface ExampleBasic {}
+  interface ExampleBasicAttributes extends StencilHTMLAttributes {}
+
+  interface ExampleDebug {
+    'display': string[];
+    'state': any;
+  }
+  interface ExampleDebugAttributes extends StencilHTMLAttributes {
+    'display'?: string[];
+    'state'?: any;
+  }
+
   interface DemoApp {}
   interface DemoAppAttributes extends StencilHTMLAttributes {}
+
+  interface DemoGroups {}
+  interface DemoGroupsAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
   interface StencilElementInterfaces {
+    'ExampleBasic': Components.ExampleBasic;
+    'ExampleDebug': Components.ExampleDebug;
     'DemoApp': Components.DemoApp;
+    'DemoGroups': Components.DemoGroups;
   }
 
   interface StencilIntrinsicElements {
+    'example-basic': Components.ExampleBasicAttributes;
+    'example-debug': Components.ExampleDebugAttributes;
     'demo-app': Components.DemoAppAttributes;
+    'demo-groups': Components.DemoGroupsAttributes;
   }
 
+
+  interface HTMLExampleBasicElement extends Components.ExampleBasic, HTMLStencilElement {}
+  var HTMLExampleBasicElement: {
+    prototype: HTMLExampleBasicElement;
+    new (): HTMLExampleBasicElement;
+  };
+
+  interface HTMLExampleDebugElement extends Components.ExampleDebug, HTMLStencilElement {}
+  var HTMLExampleDebugElement: {
+    prototype: HTMLExampleDebugElement;
+    new (): HTMLExampleDebugElement;
+  };
 
   interface HTMLDemoAppElement extends Components.DemoApp, HTMLStencilElement {}
   var HTMLDemoAppElement: {
@@ -32,12 +67,24 @@ declare global {
     new (): HTMLDemoAppElement;
   };
 
+  interface HTMLDemoGroupsElement extends Components.DemoGroups, HTMLStencilElement {}
+  var HTMLDemoGroupsElement: {
+    prototype: HTMLDemoGroupsElement;
+    new (): HTMLDemoGroupsElement;
+  };
+
   interface HTMLElementTagNameMap {
+    'example-basic': HTMLExampleBasicElement
+    'example-debug': HTMLExampleDebugElement
     'demo-app': HTMLDemoAppElement
+    'demo-groups': HTMLDemoGroupsElement
   }
 
   interface ElementTagNameMap {
+    'example-basic': HTMLExampleBasicElement;
+    'example-debug': HTMLExampleDebugElement;
     'demo-app': HTMLDemoAppElement;
+    'demo-groups': HTMLDemoGroupsElement;
   }
 
 

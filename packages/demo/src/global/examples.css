@@ -1,0 +1,27 @@
+example-basic input {
+    border: 1px solid rgba(0,0,0,0.12);
+    padding: 0.5em;
+    margin-bottom: 1em;
+    border-radius: 0.25em;
+}
+
+example-basic label {
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+button {
+    font-size: inherit;
+    line-height: normal;
+    width: 100%;
+    padding: 0.5em;
+    border: 0;
+    background: var(--c-primary);
+    color: white;
+    border-radius: 0.25em;
+    margin-top: 2em;
+}
+
+button:disabled {
+    background: var(--c-primary-light);
+}
