@@ -1,5 +1,5 @@
 import { Component, Prop, State, Element, Event, EventEmitter } from '@stencil/core';
-import { FormRenderProps, FormState, FormValues, FormConfig, FormComputedProps, FormHandlers, FormValidator, FormValidity, FormTouched, FormErrors, FormUtils, StencilFormEventDetail } from '../../declarations';
+import { FormRenderProps, FormState, FormValues, FormConfig, FormComputedProps, FormHandlers, FormValidator, FormValidity, FormTouched, FormErrors, FormUtils, StencilFormEventDetail, FormValidatorState } from '../../declarations';
 import { getElementValue, copyValidityState } from '../../utils/types';
 
 @Component({
@@ -9,6 +9,7 @@ import { getElementValue, copyValidityState } from '../../utils/types';
 export class Form implements FormConfig {
     
     @Element() el!: HTMLStencilElement;
+    private inputs: HTMLInputElement[] = [];
     private formId: string = `stencil-form-${formIds++}`;
     private dirty: boolean = false;
 
@@ -32,7 +33,7 @@ export class Form implements FormConfig {
     /** Tells Form to validate the form on each input's onBlur event */
     @Prop() validateOnBlur?: boolean = true;
     /** Tell Form if initial form values are valid or not on first render */
-    @Prop() isInitialValid?: boolean = false;
+    @Prop() isInitialValid?: boolean = true;
 
     // @Event({ eventName: 'formReset' }) onFormReset: { emit: () => StencilFormEvent<FormValues> };
     @Event({ eventName: 'submit' }) onFormSubmit: EventEmitter<StencilFormEventDetail>;
@@ -48,8 +49,8 @@ export class Form implements FormConfig {
     }
 
     componentDidLoad() {
-        for (const field of Object.keys(this.values)) {
-            this.validity = { ...this.validity, [field]: copyValidityState(this.el.querySelector(`[name="${field}"]`)) };
+        for (const input of this.inputs) {
+            this.validity = { ...this.validity, [input.name]: { ...copyValidityState(input) } }
         }
     }
 
@@ -89,28 +90,44 @@ export class Form implements FormConfig {
             let formValidity = { ...this.validity, [field]: validity };
             let formErrors = { ...this.errors, [field]: validationMessage };
 
-            const resetCustomValidity = () => {
-                target.setCustomValidity('');
-                const validity = copyValidityState(target);
-                formValidity = { ...formValidity, [field]: validity };
-                formErrors = { ...formErrors, [field]: target.validationMessage };
+            const resetCustomValidity = (_field: keyof FormValues) => {
+                const localTarget: HTMLInputElement = this.inputs.find(x => x.name === _field);
+                localTarget.setCustomValidity('');
+
+                const validity = copyValidityState(localTarget);
+                formValidity = { ...formValidity, [_field]: validity };
+                formErrors = { ...formErrors, [_field]: localTarget.validationMessage };
             }
 
-            const setCustomValidity = (message: string) => {
+            const setCustomValidity = (_field: keyof FormValues) => (message: string) => {
+                const localTarget: HTMLInputElement = this.inputs.find(x => x.name === _field);
                 // setCustomValidity because we want to #usetheplatform
                 // allows users to style with :valid and :invalid
-                target.setCustomValidity(message);
-                const validity = copyValidityState(target);
+                localTarget.setCustomValidity(message);
+                const validity = copyValidityState(localTarget);
                 
-                formValidity = { ...formValidity, [field]: validity }
-                formErrors = { ...formErrors, [field]: message }
+                formValidity = { ...formValidity, [_field]: validity }
+                formErrors = { ...formErrors, [_field]: message }
             }
             
             if (typeof this.validate === 'function') {
                 this.isValidating = true;
-                resetCustomValidity.call(this);
-                const utils = { setCustomValidity };
-                await this.validate({ values, validity: formValidity, errors: formErrors }, utils);
+                
+                let validatorState: FormValidatorState<FormValues> = { } as any;
+                for (let [key, value] of Object.entries(this.values)) {
+                    if (this.touched[key]) resetCustomValidity(key);
+                    
+                    validatorState = {
+                        ...validatorState,
+                        [key]: {
+                            value,
+                            validity: formValidity[field],
+                            error: formErrors[field],
+                            setCustomValidity: setCustomValidity(key)
+                        }
+                    }
+                }
+                await this.validate(validatorState);
                 this.isValidating = false;
             }
 
@@ -157,7 +174,7 @@ export class Form implements FormConfig {
         const groupProps = (field: keyof FormValues) => ({
             class: {
                 'input-group': true,
-                'untouched': !this.touched[field],
+                'was-touched': this.touched[field],
                 'has-focus': this.focused === field,
                 'has-value': typeof this.values[field] === 'string' ? !!this.values[field] : typeof this.values[field] === 'number' ? typeof this.values[field] !== null : false,
                 'has-error': !this.validity[field] || this.validity[field] && !this.validity[field].valid,
@@ -168,6 +185,7 @@ export class Form implements FormConfig {
             name: field,
             id: `${this.formId}-input-${field}`,
             value: this.values[field],
+            ref: (el: HTMLInputElement) => this.inputs = [...this.inputs, el],
             onInput: this.handleInput(field as string),
             onBlur: this.handleBlur(field as string),
             onFocus: this.handleFocus(field as string)

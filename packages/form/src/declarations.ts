@@ -97,17 +97,20 @@ export type FormRenderProps<Values> = FormState<Values> &
     FormUtils<Values>;
 
 export interface FormValidator<Values> {
-    (state: FormValidatorState<Values>, utils: FormValidatorUtils): FormValidatorResult;
+    (state: FormValidatorState<Values>): FormValidatorResult;
 }
+
+export interface FieldState<Values, Key extends keyof Values> {
+    value: Readonly<Values[Key]>,
+    validity: Readonly<ValidityState>,
+    error: Readonly<string>,
+    setCustomValidity: (message: string) => void
+}
+
+export type FormValidatorState<Values, Key extends keyof Values = keyof Values> = { [K in Key]: FieldState<Values, K> }
 
 export type FormValidatorResult = void | Promise<any>;
 
-export interface FormValidatorState<Values> {
-    values: Values,
-    validity: FormValidity<Values>,
-    errors: FormErrors<Values>
-}
-
-export interface FormValidatorUtils {
-    setCustomValidity: (message: string) => void
-}
+// export interface FormValidatorUtils {
+//     setCustomValidity: (message: string) => void
+// }
