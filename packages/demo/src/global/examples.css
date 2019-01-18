@@ -1,16 +1,76 @@
-example-basic input {
+stencil-form input {
     border: 1px solid rgba(0,0,0,0.12);
     padding: 0.5em;
     margin-bottom: 1em;
     border-radius: 0.25em;
+    outline: 0;
+    transition: all 250ms cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-example-basic label {
+stencil-form input:hover {
+    border-color: black;
+}
+stencil-form input:focus {
+    border: 2px solid var(--c-primary) !important;
+    padding: calc(0.5em - 1px);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12);
+}
+
+stencil-form .input-group:not(.was-touched) .error {
+    display: none;
+}
+
+stencil-form .input-group.was-touched input:invalid {
+    border-color: var(--c-error);
+}
+
+stencil-form label {
     display: block;
+    padding-bottom: 0.5em;
+    transition: opacity 250ms cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+stencil-form label:not(.error) {
+    opacity: 0.54;
+}
+
+stencil-form .input-group:hover label:not(.error),
+stencil-form .input-group:focus-within label:not(.error) {
+    opacity: 0.87;
+}
+
+stencil-form label.error {
+    display: block;
+    color: var(--c-error);
+    padding: 0;
+    padding-top: 0;
+    font-size: 0.75em;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    animation: errorEnter 250ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+}
+
+@keyframes errorEnter {
+    from {
+        transform: translateY(-12px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+stencil-form .input-group {
+    margin-bottom: 1em;
+}
+
+stencil-form .input-group input {
     margin-bottom: 0.5em;
 }
 
-button {
+stencil-form button {
     font-size: inherit;
     line-height: normal;
     width: 100%;
@@ -22,6 +82,6 @@ button {
     margin-top: 2em;
 }
 
-button:disabled {
+stencil-form button:disabled {
     background: var(--c-primary-light);
 }

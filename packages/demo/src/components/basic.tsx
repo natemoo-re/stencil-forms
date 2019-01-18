@@ -31,22 +31,28 @@ export class Basic {
     render() {
         return (
             <main>
-                <h1>Signup</h1>
+                <h1>Basic</h1>
                 <stencil-form
                     initialValues={this.initialValues}
                     onSubmit={this.handleSubmit}
                     renderer={(props: FormRenderProps<FormValues>) => {
-                        const { formProps, labelProps, inputProps, isSubmitting } = props;
+                        const { formProps, groupProps, labelProps, inputProps, isSubmitting } = props;
                         return (
                             <form {...formProps}>
-                                <label {...labelProps('firstName')}> First Name </label>
-                                <input {...inputProps('firstName')} placeholder="John" />
+                                <div {...groupProps('firstName')}>
+                                    <label {...labelProps('firstName')}> First Name </label>
+                                    <input {...inputProps('firstName')} placeholder="John" />
+                                </div>
 
-                                <label {...labelProps('lastName')}> Last Name </label>
-                                <input {...inputProps('lastName')} placeholder="Doe" />
+                                <div {...groupProps('firstName')}>
+                                    <label {...labelProps('lastName')}> Last Name </label>
+                                    <input {...inputProps('lastName')} placeholder="Doe" />
+                                </div>
 
-                                <label {...labelProps('email')}> Email </label>
-                                <input {...inputProps('email')} placeholder="john@acme.com" type="email" />
+                                <div {...groupProps('firstName')}>
+                                    <label {...labelProps('email')}> Email </label>
+                                    <input {...inputProps('email')} placeholder="john@acme.com" type="email" />
+                                </div>
 
                                 <button type="submit" {...(isSubmitting ? { disabled: true } : {})}>Submit</button>
 

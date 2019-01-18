@@ -26,26 +26,36 @@ export namespace Components {
     'state'?: any;
   }
 
-  interface DemoApp {}
-  interface DemoAppAttributes extends StencilHTMLAttributes {}
-
   interface DemoGroups {}
   interface DemoGroupsAttributes extends StencilHTMLAttributes {}
+
+  interface ExampleInputGroups {}
+  interface ExampleInputGroupsAttributes extends StencilHTMLAttributes {}
+
+  interface AppRoot {}
+  interface AppRootAttributes extends StencilHTMLAttributes {}
+
+  interface ExampleValidation {}
+  interface ExampleValidationAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
   interface StencilElementInterfaces {
     'ExampleBasic': Components.ExampleBasic;
     'ExampleDebug': Components.ExampleDebug;
-    'DemoApp': Components.DemoApp;
     'DemoGroups': Components.DemoGroups;
+    'ExampleInputGroups': Components.ExampleInputGroups;
+    'AppRoot': Components.AppRoot;
+    'ExampleValidation': Components.ExampleValidation;
   }
 
   interface StencilIntrinsicElements {
     'example-basic': Components.ExampleBasicAttributes;
     'example-debug': Components.ExampleDebugAttributes;
-    'demo-app': Components.DemoAppAttributes;
     'demo-groups': Components.DemoGroupsAttributes;
+    'example-input-groups': Components.ExampleInputGroupsAttributes;
+    'app-root': Components.AppRootAttributes;
+    'example-validation': Components.ExampleValidationAttributes;
   }
 
 
@@ -61,30 +71,46 @@ declare global {
     new (): HTMLExampleDebugElement;
   };
 
-  interface HTMLDemoAppElement extends Components.DemoApp, HTMLStencilElement {}
-  var HTMLDemoAppElement: {
-    prototype: HTMLDemoAppElement;
-    new (): HTMLDemoAppElement;
-  };
-
   interface HTMLDemoGroupsElement extends Components.DemoGroups, HTMLStencilElement {}
   var HTMLDemoGroupsElement: {
     prototype: HTMLDemoGroupsElement;
     new (): HTMLDemoGroupsElement;
   };
 
+  interface HTMLExampleInputGroupsElement extends Components.ExampleInputGroups, HTMLStencilElement {}
+  var HTMLExampleInputGroupsElement: {
+    prototype: HTMLExampleInputGroupsElement;
+    new (): HTMLExampleInputGroupsElement;
+  };
+
+  interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
+  var HTMLAppRootElement: {
+    prototype: HTMLAppRootElement;
+    new (): HTMLAppRootElement;
+  };
+
+  interface HTMLExampleValidationElement extends Components.ExampleValidation, HTMLStencilElement {}
+  var HTMLExampleValidationElement: {
+    prototype: HTMLExampleValidationElement;
+    new (): HTMLExampleValidationElement;
+  };
+
   interface HTMLElementTagNameMap {
     'example-basic': HTMLExampleBasicElement
     'example-debug': HTMLExampleDebugElement
-    'demo-app': HTMLDemoAppElement
     'demo-groups': HTMLDemoGroupsElement
+    'example-input-groups': HTMLExampleInputGroupsElement
+    'app-root': HTMLAppRootElement
+    'example-validation': HTMLExampleValidationElement
   }
 
   interface ElementTagNameMap {
     'example-basic': HTMLExampleBasicElement;
     'example-debug': HTMLExampleDebugElement;
-    'demo-app': HTMLDemoAppElement;
     'demo-groups': HTMLDemoGroupsElement;
+    'example-input-groups': HTMLExampleInputGroupsElement;
+    'app-root': HTMLAppRootElement;
+    'example-validation': HTMLExampleValidationElement;
   }
 
 

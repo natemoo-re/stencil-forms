@@ -6,7 +6,8 @@ import { Component, Prop } from '@stencil/core';
     styles: `
         :host {
             display: block;
-            margin-top: 4em;
+            margin: 4em 0;
+            font-size: 14px;
         }
 
         div {
