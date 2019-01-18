@@ -22,9 +22,9 @@ interface FormValues {
 <stencil-form 
     initialValues={{ demo: 'Hello world!' }}
     renderer={(props: FormRenderProps<FormValues>) => {
-        const { errors, groupProps, labelProps, inputProps } = props;
+        const { errors, groupProps, labelProps, inputProps, formProps } = props;
         return (
-            <form>
+            <form {...formProps}>
                 <div {...groupProps('demo')}>
                     <label {...labelProps('demo')}> Demo </label>
                     <input {...inputProps('demo')} type='text' required />
