@@ -1,6 +1,6 @@
 {
   "name": "stencil-form",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Stencil component for managing form state",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
