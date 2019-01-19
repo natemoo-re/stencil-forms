@@ -4,7 +4,7 @@ export const config: Config = {
   namespace: 'stencil-form',
   outputTargets:[
     { type: 'dist' },
-    { type: 'docs' },
+    { type: 'docs', dir: '../../docs' },
     {
       type: 'www',
       serviceWorker: null // disable service workers

@@ -82,10 +82,13 @@ export interface FormConfig {
     isInitialValid?: boolean;
 }
 
-export interface FormUtils<Values> {
-    groupProps: (key: keyof Values) => object
-    inputProps: (key: keyof Values) => object,
-    labelProps: (key: keyof Values) => object,
+export interface FormUtils<Values, Key extends keyof Values> {
+    groupProps: (key: Key) => object
+    inputProps: (key: Key) => object,
+    labelProps: (key: Key, value?: Values[Key]) => object,
+    selectProps: (key: Key) => object,
+    checkboxProps: (key: Key) => object,
+    radioProps: (key: Key, value: Values[Key]) => object,
     formProps: object
 }
 
@@ -94,7 +97,7 @@ export type StencilFormEventDetail = { values: FormValues, actions: { setSubmitt
 export type FormRenderProps<Values> = FormState<Values> &
     FormHandlers<Values> &
     FormComputedProps<Values> & 
-    FormUtils<Values>;
+    FormUtils<Values, keyof Values>;
 
 export interface FormValidator<Values> {
     (state: FormValidatorState<Values>): FormValidatorResult;

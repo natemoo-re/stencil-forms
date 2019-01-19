@@ -36,10 +36,23 @@ interface FormValues {
 />
 ```
 
+## Styling
+Styling is entirely up to you! The component provides minimal, mildly opinionated resets for `input` and `select` elements but stops short of removing things like `::-webkit-inner-spin-button` or `::-ms-clear`. If you'd like to ensure cross-browser consistency, I'd highly reccommend reading [TJ VanToll's pseudo-element list](https://www.tjvantoll.com/2013/04/15/list-of-pseudo-elements-to-style-form-controls/).
+
+In order to allow maximum flexibility, `<stencil-form />` does not use Shadow DOM. If the [`::part` and `::theme`](https://drafts.csswg.org/css-shadow-parts-1/) proposal is rolled out, that might change&mdash;for now, Shadow DOM makes it too difficult for developers to implement custom styles.
+
 
 ## Installation
 
 This package in unpublished at the moment. It will be available on NPM soon.
+
+To build locally, just clone this monorepo. 
+
+```bash
+lerna bootstrap
+cd packages/demo
+npm start
+```
 
 <!-- ### Script tag
 

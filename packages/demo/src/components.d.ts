@@ -14,6 +14,9 @@ import '@stencil/state-tunnel';
 
 export namespace Components {
 
+  interface ExampleAdvanced {}
+  interface ExampleAdvancedAttributes extends StencilHTMLAttributes {}
+
   interface ExampleBasic {}
   interface ExampleBasicAttributes extends StencilHTMLAttributes {}
 
@@ -41,6 +44,7 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
+    'ExampleAdvanced': Components.ExampleAdvanced;
     'ExampleBasic': Components.ExampleBasic;
     'ExampleDebug': Components.ExampleDebug;
     'DemoGroups': Components.DemoGroups;
@@ -50,6 +54,7 @@ declare global {
   }
 
   interface StencilIntrinsicElements {
+    'example-advanced': Components.ExampleAdvancedAttributes;
     'example-basic': Components.ExampleBasicAttributes;
     'example-debug': Components.ExampleDebugAttributes;
     'demo-groups': Components.DemoGroupsAttributes;
@@ -58,6 +63,12 @@ declare global {
     'example-validation': Components.ExampleValidationAttributes;
   }
 
+
+  interface HTMLExampleAdvancedElement extends Components.ExampleAdvanced, HTMLStencilElement {}
+  var HTMLExampleAdvancedElement: {
+    prototype: HTMLExampleAdvancedElement;
+    new (): HTMLExampleAdvancedElement;
+  };
 
   interface HTMLExampleBasicElement extends Components.ExampleBasic, HTMLStencilElement {}
   var HTMLExampleBasicElement: {
@@ -96,6 +107,7 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'example-advanced': HTMLExampleAdvancedElement
     'example-basic': HTMLExampleBasicElement
     'example-debug': HTMLExampleDebugElement
     'demo-groups': HTMLDemoGroupsElement
@@ -105,6 +117,7 @@ declare global {
   }
 
   interface ElementTagNameMap {
+    'example-advanced': HTMLExampleAdvancedElement;
     'example-basic': HTMLExampleBasicElement;
     'example-debug': HTMLExampleDebugElement;
     'demo-groups': HTMLDemoGroupsElement;

@@ -26,7 +26,7 @@ export class Basic {
         if (username.validity.patternMismatch) {
             // Instead of the default browser message, this sets a custom one
             username.setCustomValidity('Username may not contain any spaces.');
-        } else if (username.value === 'admin') {
+        } else if (/\badmin\b/gi.test(username.value)) {
             // In a case not covered by the Constraint Validation API
             // We use setCustomValidity, which changes the ValidityState of the input element
             // In CSS, the :invalid selector will still work
@@ -52,8 +52,9 @@ export class Basic {
                         return (
                             <form {...formProps}>
                                 <div {...groupProps('username')}>
-                                    <label {...labelProps('username')}> Username </label>
+                                    <label {...labelProps('username')}> Username (try "admin" or use spaces) </label>
                                     <input {...inputProps('username')} required pattern='\S+' />
+                                    {/* Note: this causes the node to be added/removed from the DOM, which enabled nice transitions via CSS `animation` */}
                                     { errors.username && <label class='error' {...labelProps('username')}> {errors.username} </label> }
                                 </div>
 

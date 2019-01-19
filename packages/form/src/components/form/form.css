@@ -2,14 +2,14 @@ stencil-form {
     display: block;
 }
 
-stencil-form input {
+stencil-form input,
+stencil-form select {
   display: inline-block;
 
   font-family: inherit;
   font: inherit;
   line-height: normal;
   color: inherit;
-  
   
   flex: 1;
   
@@ -23,9 +23,19 @@ stencil-form input {
   border-radius: 0;
 
   background: transparent;
-
   box-sizing: border-box;
+}
+
+stencil-form select {
   appearance: none;
+}
+
+stencil-form input[type="radio"],
+stencil-form input[type="checkbox"] {
+  width: 1em;
+  height: 1em;
+  max-width: unset;
+  flex: 0;
 }
 
 stencil-form input[type="button"],
@@ -43,11 +53,10 @@ stencil-form input::-moz-focus-inner {
 
 stencil-form input[type="checkbox"],
 stencil-form input[type="radio"] {
-  padding: 0;
-  box-sizing: border-box;
+  display: initial;
+  background: initial;
 }
 
-stencil-form input[type="number"]::-webkit-inner-spin-button,
-stencil-form input[type="number"]::-webkit-outer-spin-button {
-  height: auto;
+stencil-form .input-group {
+  position: relative;
 }

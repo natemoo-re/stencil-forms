@@ -9,6 +9,7 @@ import { getElementValue, copyValidityState } from '../../utils/types';
 export class Form implements FormConfig {
     
     @Element() el!: HTMLStencilElement;
+    private groups: { [key: string]: HTMLElement } = {} as any;
     private inputs: HTMLInputElement[] = [];
     private formId: string = `stencil-form-${formIds++}`;
     private dirty: boolean = false;
@@ -54,7 +55,9 @@ export class Form implements FormConfig {
         }
     }
 
-    setSubmitting = (value: boolean) => this.isSubmitting = value; 
+    setSubmitting = (value: boolean) => {
+        this.isSubmitting = value;
+    }
 
     handleSubmit = (event: Event) => {
         event.preventDefault();
@@ -75,65 +78,66 @@ export class Form implements FormConfig {
         this.submitCount = 0;
     };
 
+    handleValidation = async (field: string, target: HTMLInputElement | HTMLTextAreaElement) => {
+        const validity = copyValidityState(target);
+        const { validationMessage } = target;
+
+        let formValidity = { ...this.validity, [field]: validity };
+        let formErrors = { ...this.errors, [field]: validationMessage };
+
+        const resetCustomValidity = (_field: keyof FormValues) => {
+            const localTarget: HTMLInputElement = this.inputs.find(x => x.name === _field);
+            localTarget.setCustomValidity('');
+
+            const validity = copyValidityState(localTarget);
+            formValidity = { ...formValidity, [_field]: validity };
+            formErrors = { ...formErrors, [_field]: localTarget.validationMessage };
+        }
+
+        const setCustomValidity = (_field: keyof FormValues) => (message: string) => {
+            const localTarget: HTMLInputElement = this.inputs.find(x => x.name === _field);
+            // setCustomValidity because we want to #usetheplatform
+            // allows users to style with :valid and :invalid
+            localTarget.setCustomValidity(message);
+            const validity = copyValidityState(localTarget);
+
+            formValidity = { ...formValidity, [_field]: validity }
+            formErrors = { ...formErrors, [_field]: message }
+        }
+
+        if (typeof this.validate === 'function') {
+            this.isValidating = true;
+
+            let validatorState: FormValidatorState<FormValues> = {} as any;
+            for (let [key, value] of Object.entries(this.values)) {
+                if (this.touched[key]) resetCustomValidity(key);
+
+                validatorState = {
+                    ...validatorState,
+                    [key]: {
+                        value,
+                        validity: formValidity[field],
+                        error: formErrors[field],
+                        setCustomValidity: setCustomValidity(key)
+                    }
+                }
+            }
+            await this.validate(validatorState);
+            this.isValidating = false;
+        }
+
+        this.validity = formValidity;
+        this.errors = formErrors;
+    }
+
     handleInput = (field: string) => async (event: Event) => {
         const target = event.target as HTMLInputElement | HTMLTextAreaElement;
         const value: any = getElementValue(target);
-        
-        const values = { ...this.values, [field]: value };
-        this.values = values;
+    
+        this.values = { ...this.values, [field]: value };
         
         /** Validate, if user wants to validateOnInput */
-        if (this.validateOnInput) {
-            const validity = copyValidityState(target);
-            const { validationMessage } = target;
-
-            let formValidity = { ...this.validity, [field]: validity };
-            let formErrors = { ...this.errors, [field]: validationMessage };
-
-            const resetCustomValidity = (_field: keyof FormValues) => {
-                const localTarget: HTMLInputElement = this.inputs.find(x => x.name === _field);
-                localTarget.setCustomValidity('');
-
-                const validity = copyValidityState(localTarget);
-                formValidity = { ...formValidity, [_field]: validity };
-                formErrors = { ...formErrors, [_field]: localTarget.validationMessage };
-            }
-
-            const setCustomValidity = (_field: keyof FormValues) => (message: string) => {
-                const localTarget: HTMLInputElement = this.inputs.find(x => x.name === _field);
-                // setCustomValidity because we want to #usetheplatform
-                // allows users to style with :valid and :invalid
-                localTarget.setCustomValidity(message);
-                const validity = copyValidityState(localTarget);
-                
-                formValidity = { ...formValidity, [_field]: validity }
-                formErrors = { ...formErrors, [_field]: message }
-            }
-            
-            if (typeof this.validate === 'function') {
-                this.isValidating = true;
-                
-                let validatorState: FormValidatorState<FormValues> = { } as any;
-                for (let [key, value] of Object.entries(this.values)) {
-                    if (this.touched[key]) resetCustomValidity(key);
-                    
-                    validatorState = {
-                        ...validatorState,
-                        [key]: {
-                            value,
-                            validity: formValidity[field],
-                            error: formErrors[field],
-                            setCustomValidity: setCustomValidity(key)
-                        }
-                    }
-                }
-                await this.validate(validatorState);
-                this.isValidating = false;
-            }
-
-            this.validity = formValidity;
-            this.errors = formErrors;
-        }
+        if (this.validateOnInput) this.handleValidation(field, target);
     };
 
     handleBlur = (field: string) => (event: Event) => {
@@ -142,6 +146,8 @@ export class Form implements FormConfig {
         const value: any = getElementValue(target);
     
         this.values = { ...this.values, [field]: value };
+        /** Validate, if user wants to validateOnInput */
+        if (this.validateOnBlur) this.handleValidation(field, target);
     };
 
     handleFocus = (field: string) => () => {
@@ -170,46 +176,74 @@ export class Form implements FormConfig {
         return { dirty, isValid, initialValues };
     }
 
-    private composedUtils = (): FormUtils<FormValues> => {
+    private composedUtils = (): FormUtils<FormValues, keyof FormValues> => {
         const groupProps = (field: keyof FormValues) => ({
+            'data-for': field,
             class: {
                 'input-group': true,
                 'was-touched': this.touched[field],
                 'has-focus': this.focused === field,
                 'has-value': typeof this.values[field] === 'string' ? !!this.values[field] : typeof this.values[field] === 'number' ? typeof this.values[field] !== null : false,
                 'has-error': !this.validity[field] || this.validity[field] && !this.validity[field].valid,
-            }
+            },
+            ref: (el => this.groups = { ...this.groups, [field]: el })
         })
 
         const inputProps = (field: keyof FormValues) => ({
             name: field,
+            ref: (el: HTMLInputElement) => this.inputs = [...this.inputs, el],
+            type: 'text',
+            onInput: this.handleInput(field as string),
+            onBlur: this.handleBlur(field as string),
+            onFocus: this.handleFocus(field as string),
+            id: `${this.formId}-input-${field}`,
+            value: this.values[field]
+        })
+
+        const radioProps = (field: keyof FormValues, value: string) => ({
+            ...inputProps(field),
+            type: 'radio',
+            id: `${this.formId}-input-${field}--radio-${value}`,
+            value: value,
+            checked: this.values[field] === value
+        });
+
+        const checkboxProps = (field: keyof FormValues) => ({
+            ...inputProps(field),
+            type: 'checkbox',
+            value: null,
+            checked: !!this.values[field]
+        });
+
+        const selectProps = (field: keyof FormValues) => ({
+            name: field,
             id: `${this.formId}-input-${field}`,
             value: this.values[field],
             ref: (el: HTMLInputElement) => this.inputs = [...this.inputs, el],
-            onInput: this.handleInput(field as string),
+            onChange: this.handleInput(field as string),
             onBlur: this.handleBlur(field as string),
             onFocus: this.handleFocus(field as string)
         });
 
-        const labelProps = (field: keyof FormValues) => ({
-            htmlFor: `${this.formId}-input-${field}`
-        });
+        const labelProps = (field: keyof FormValues, value?: string) => ({
+            htmlFor: !value ? `${this.formId}-input-${field}` : `${this.formId}-input-${field}--radio-${value}`
+        })
 
         const formProps = {
             action: 'javascript:void(0);',
             onSubmit: this.handleSubmit
         };
 
-        return { groupProps, inputProps, labelProps, formProps };
+        return { groupProps, inputProps, selectProps, checkboxProps, radioProps, labelProps, formProps };
     }
 
     render() {
         const state: FormState<FormValues> = this.composedState();
         const handlers: FormHandlers<FormValues> = this.composedHandlers();
         const computedProps: FormComputedProps<FormValues> = this.composedComputedProps();
-        const utils: FormUtils<FormValues> = this.composedUtils();
+        const utils: FormUtils<FormValues, keyof FormValues> = this.composedUtils();
         
-        const renderProps: FormRenderProps<any> = { ...state, ...handlers, ...computedProps, ...utils };
+        const renderProps: FormRenderProps<any> = { ...state,...handlers, ...computedProps, ...utils };
         return this.renderer(renderProps);
     }
 }

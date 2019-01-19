@@ -1,4 +1,16 @@
-stencil-form input {
+stencil-form * {
+    box-sizing: border-box;
+}
+
+stencil-form input:-webkit-autofill,
+stencil-form input:-webkit-autofill:hover, 
+stencil-form input:-webkit-autofill:focus, 
+stencil-form input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+stencil-form input,
+stencil-form select {
     border: 1px solid rgba(0,0,0,0.12);
     padding: 0.5em;
     margin-bottom: 1em;
@@ -7,13 +19,117 @@ stencil-form input {
     transition: all 250ms cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-stencil-form input:hover {
+stencil-form input[type="radio"],
+stencil-form input[type="checkbox"] {
+    margin: 0;
+    padding: 0;
+    margin-right: 0.25em;
+    margin-bottom: 0 !important;
+}
+
+stencil-form select {
+    margin-bottom: 0;
+}
+
+stencil-form .select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+stencil-form .select-wrapper::after {
+    --size: 0.5em;
+    --dropdown-color: rgba(0,0,0,0.12);
+    content: '';
+    position: absolute;
+    margin: auto 0.5em;
+    transform: translate(0.25em, 0) rotate(-90deg);
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-top: var(--size) solid var(--dropdown-color);
+    border-right: calc(var(--size) * 0.866) solid transparent !important;
+    border-bottom: var(--size) solid transparent !important;
+    border-left: calc(var(--size) * 0.866) solid transparent !important;
+    pointer-events: none;
+    transition: transform 150ms cubic-bezier(0.23, 1, 0.320, 1), border-color 250ms cubic-bezier(0.215, 0.610, 0.355, 1);
+}
+
+stencil-form input:hover,
+stencil-form select:hover {
     border-color: black;
 }
-stencil-form input:focus {
+
+stencil-form .radio-container {
+    opacity: 1 !important;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+}
+
+stencil-form .radio-container label {
+    display: inline-block;
+    color: rgba(0,0,0,0.54);
+    transform: translateX(0);
+    transition: transform 250ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+stencil-form .radio-container input:focus ~ label {
+    color: var(--c-primary);
+}
+
+stencil-form .radio-container input:checked ~ label {
+    transform: translateX(3px);
+    color: rgba(0,0,0,0.87);
+}
+
+stencil-form .radio-container:hover label {
+    color: rgba(0,0,0,0.87);
+}
+
+stencil-form .radio-container input {
+    opacity: 0.5;
+    transition: opacity 250ms cubic-bezier(0.215, 0.610, 0.355, 1);
+}
+
+stencil-form .radio-container:hover input,
+stencil-form .radio-container input:checked {
+    opacity: 1;
+}
+
+stencil-form input:focus,
+stencil-form select:focus {
     border: 2px solid var(--c-primary) !important;
     padding: calc(0.5em - 1px);
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12);
+}
+
+stencil-form input[type="radio"]:focus,
+stencil-form input[type="checkbox"]:focus {
+    padding: 0;
+    box-shadow: none;
+}
+
+stencil-form .input-group:hover .select-wrapper::after,
+stencil-form .input-group:focus-within .select-wrapper::after {
+    transform: translate(0, 0.25em) rotate(0deg);
+}
+
+stencil-form .input-group:hover .select-wrapper::after {
+    border-color: rgba(0,0,0,1);
+}
+
+stencil-form .input-group:focus-within .select-wrapper::after {
+    border-color: var(--c-primary);
+}
+
+stencil-form .input-group:not(.has-value) select {
+    color: rgba(0,0,0,0.28);
+}
+
+stencil-form .input-group:not(.has-value) select:hover {
+    color: rgba(0,0,0,0.54);
 }
 
 stencil-form .input-group:not(.was-touched) .error {
@@ -24,18 +140,28 @@ stencil-form .input-group.was-touched input:invalid {
     border-color: var(--c-error);
 }
 
-stencil-form label {
+stencil-form .input-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+stencil-form label,
+stencil-form legend {
     display: block;
     padding-bottom: 0.5em;
     transition: opacity 250ms cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-stencil-form label:not(.error) {
+stencil-form label:not(.error),
+stencil-form legend {
     opacity: 0.54;
 }
 
 stencil-form .input-group:hover label:not(.error),
-stencil-form .input-group:focus-within label:not(.error) {
+stencil-form .input-group:focus-within label:not(.error),
+stencil-form .input-group:hover legend,
+stencil-form .input-group:focus-within legend {
     opacity: 0.87;
 }
 
@@ -66,7 +192,8 @@ stencil-form .input-group {
     margin-bottom: 1em;
 }
 
-stencil-form .input-group input {
+stencil-form .input-group input,
+stencil-form .input-group .select-wrapper {
     margin-bottom: 0.5em;
 }
 
@@ -84,4 +211,57 @@ stencil-form button {
 
 stencil-form button:disabled {
     background: var(--c-primary-light);
+}
+
+stencil-form fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.checkbox-container label {
+    padding: 0;
+    margin-left: 0.75em;
+}
+
+.notice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em;
+    font-size: 1em;
+    color: white;
+    margin-top: 1em;
+    animation: errorEnter 250ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+    border-radius: 0.125em;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.12), 0 6px 12px 0 rgba(0,0,0,0.06);
+    background: #f44336;
+}
+
+.notice.red {
+    background: #f44336;
+}
+.notice.orange {
+    background: #ff9800;
+}
+.notice.yellow {
+    background: #ffc107;
+}
+.notice.green {
+    background: #4caf50;
+}
+.notice.blue {
+    background: #2196f3;
+}
+.notice.indigo {
+    background: #673ab7;
+}
+.notice.violet {
+    background: #e91e63;
 }

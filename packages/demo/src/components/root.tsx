@@ -8,7 +8,8 @@ export class Root {
     private menu: { title: string, url: string }[] = [
         { title: 'Basic', url: 'basic' },
         { title: 'Validation', url: 'validation' },
-        { title: 'Input Groups', url: 'input-groups' }
+        // { title: 'Input Groups', url: 'input-groups' },
+        { title: 'Advanced', url: 'advanced' },
     ]
 
     render() {
