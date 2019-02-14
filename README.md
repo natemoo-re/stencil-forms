@@ -6,7 +6,9 @@
 <h1 align="center">Stencil Forms</h1>
 <p align="center">Stencil Forms is a tool for managing complex form state in <a href="https://stenciljs.com">Stencil</a> projects.</p>
 
----
+<br/>
+<br/>
+<br/>
 
 > 🚨 This component is built for Stencil apps, not vanilla Web Component projects. It might be possible to use it in vanilla projects, but I wouldn't recommend it. 🚨
 
