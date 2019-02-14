@@ -1,5 +1,9 @@
 import { Component } from '@stencil/core';
 
+// const Test = () => {
+//     return <div innerHTML='<script>(() => alert("Hacked!"))()</script>' />
+// }
+
 @Component({
     tag: 'app-root'
 })
