@@ -7,7 +7,6 @@
 
 import '@stencil/core';
 
-import 'stencil-form';
 import '@stencil/router';
 import '@stencil/state-tunnel';
 

@@ -1,5 +1,5 @@
 import { Component, FunctionalComponent } from '@stencil/core';
-import { FormRenderProps, FormValidator } from 'stencil-form';
+import { FormRenderProps, FormValidator } from 'stencil-forms';
 
 interface FormValues {
     username: string,
