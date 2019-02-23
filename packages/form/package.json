@@ -20,7 +20,12 @@
   },
   "devDependencies": {
     "@stencil/core": "~0.16.2",
-    "np": "~4.0.2"
+    "@types/jest": "23.3.14",
+    "@types/puppeteer": "1.12.1",
+    "jest": "23.6.0",
+    "jest-cli": "23.6.0",
+    "np": "~4.0.2",
+    "puppeteer": "1.8.0"
   },
   "license": "MIT"
 }
