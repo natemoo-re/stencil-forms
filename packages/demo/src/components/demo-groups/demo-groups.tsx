@@ -1,5 +1,5 @@
 import { Component } from '@stencil/core';
-import { FormRenderProps, StencilFormEventDetail } from 'stencil-form';
+import { FormRenderProps, StencilFormEventDetail } from 'stencil-forms';
 
 interface FormValues {
     email: string,

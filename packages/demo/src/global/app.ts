@@ -1,1 +1,1 @@
-import 'stencil-form';
+import 'stencil-forms';
