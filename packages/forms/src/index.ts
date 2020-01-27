@@ -1,2 +1,2 @@
-export { Components } from './components';
+export * from './components';
 export * from './declarations';

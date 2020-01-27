@@ -5,7 +5,7 @@ export const config: Config = {
   globalScript: 'src/global/app.ts',
   globalStyle: 'src/global/app.css',
   outputTargets:[
-    { type: 'docs' },
+    { type: 'docs-readme' },
     {
       type: 'www',
       serviceWorker: null // disable service workers

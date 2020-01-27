@@ -1,4 +1,4 @@
-import { Component, FunctionalComponent } from '@stencil/core';
+import { Component, FunctionalComponent, h } from '@stencil/core';
 import { FormRenderProps, FormValidator } from 'stencil-forms';
 
 interface FormValues {

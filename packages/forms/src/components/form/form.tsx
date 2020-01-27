@@ -7,8 +7,7 @@ import { getElementValue, copyValidityState } from '../../utils/types';
     styleUrl: 'form.css'
 })
 export class Form implements FormConfig {
-    
-    @Element() el!: HTMLStencilElement;
+    @Element() el!: HTMLStencilFormElement;
     private groups: { [key: string]: HTMLElement } = {} as any;
     private inputs: HTMLInputElement[] = [];
     private formId: string = `stencil-form-${formIds++}`;

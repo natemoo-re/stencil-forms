@@ -2,7 +2,7 @@
   "name": "stencil-forms",
   "version": "1.0.0-0",
   "description": "Stencil component for managing form state",
-  "module": "dist/esm/index.js",
+  "module": "dist/index.mjs",
   "main": "dist/index.js",
   "unpkg": "dist/ionic.js",
   "types": "dist/types/index.d.ts",
@@ -19,13 +19,13 @@
     "release": "np"
   },
   "devDependencies": {
-    "@stencil/core": "~0.16.2",
-    "@types/jest": "23.3.14",
-    "@types/puppeteer": "1.12.1",
-    "jest": "23.6.0",
-    "jest-cli": "23.6.0",
-    "np": "~4.0.2",
-    "puppeteer": "1.8.0"
+    "@stencil/core": "^1.8.4",
+    "@types/jest": "^24.9.0",
+    "@types/puppeteer": "^2.0.0",
+    "jest": "^24.9.0",
+    "jest-cli": "^24.9.0",
+    "np": "^5.2.1",
+    "puppeteer": "^2.0.0"
   },
   "license": "MIT"
 }

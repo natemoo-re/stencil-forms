@@ -19,9 +19,9 @@
 
 ## Events
 
-| Event    | Description | Type                                  |
-| -------- | ----------- | ------------------------------------- |
-| `submit` |             | `CustomEvent<StencilFormEventDetail>` |
+| Event    | Description | Type                                                                                          |
+| -------- | ----------- | --------------------------------------------------------------------------------------------- |
+| `submit` |             | `CustomEvent<{ values: FormValues; actions: { setSubmitting: (value: boolean) => void; }; }>` |
 
 
 ----------------------------------------------
