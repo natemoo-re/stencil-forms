@@ -1,4 +1,4 @@
-import { Component } from '@stencil/core';
+import { Component, h } from '@stencil/core';
 
 // const Test = () => {
 //     return <div innerHTML='<script>(() => alert("Hacked!"))()</script>' />

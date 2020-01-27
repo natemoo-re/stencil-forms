@@ -1,4 +1,4 @@
-import { Component } from '@stencil/core';
+import { Component, h } from '@stencil/core';
 import { FormRenderProps, StencilFormEventDetail } from 'stencil-forms';
 
 const capitalize = (value: string) => `${value.charAt(0).toUpperCase()}${value.slice(1).toLowerCase()}`;
