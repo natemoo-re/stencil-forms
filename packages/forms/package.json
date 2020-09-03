@@ -25,7 +25,7 @@
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
     "np": "^5.2.1",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^1.13.0"
   },
   "license": "MIT"
 }
